@@ -34,7 +34,7 @@ class BookController extends Controller
     {
         //
         $book = $request->all();
-        $book['picture_path'] = $request->file('picture_path')->store('assets/book' . 'public');
+        $book['picture_path'] = $request->file('picture_path')->store('assets/book', 'public');
 
         Books::create($book);
         return redirect()->route('books.index');

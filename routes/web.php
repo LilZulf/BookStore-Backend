@@ -27,6 +27,7 @@ Route::prefix('dashboard')->middleware(['auth:sanctum', 'isAdmin'])->group(funct
     Route::resource('users', UserController::class);
     Route::resource('books', BookController::class);
     Route::resource('transactions', TransactionController::class);
+    Route::get('transactions/{id}/status/{status}', [TransactionController::class, 'changeStatus'])->name('transactions.changeStatus');
 });
 
 

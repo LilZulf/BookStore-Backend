@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transactions;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -12,6 +13,10 @@ class TransactionController extends Controller
     public function index()
     {
         //
+        $transaction = Transactions::with(['books', 'user'])->paginate(10);
+        return view('transactions.index', [
+            'transactions' => $transaction
+        ]);
     }
 
     /**
@@ -25,17 +30,19 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store()
     {
         //
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Transactions $transaction)
     {
         //
+        return view('transactions.detail', ['item' => $transaction]);
     }
 
     /**
@@ -60,5 +67,15 @@ class TransactionController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function changeStatus(Request $request, $id, $status)
+    {
+        $transaction = Transactions::findOrFail($id);
+
+        $transaction->status = $status;
+        $transaction->save();
+
+        return redirect()->route('transactions.index');
     }
 }
